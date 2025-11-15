@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Humanity – Réseau social solidaire</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-main: #020617;
+      --cyan: #06b6d4;
+      --turquoise: #22d3ee;
+      --text-main: #e5f1ff;
+      --text-muted: #64748b;
+      --border-subtle: #1e293b;
+      --radius-lg: 18px;
+      --radius-xl: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* CONTAINERS GLOBAUX */
+    .root {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ========= ÉCRAN AUTH ========= */
+
+    .auth-shell {
+      min-height: 100vh;
+      padding: 28px 18px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .auth-header {
+      text-align: center;
+    }
+
+    .auth-logo-wrap {
+      width: 82px;
+      height: 82px;
+      border-radius: 999px;
+      margin: 0 auto 14px auto;
+      background: radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.35), #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 26px rgba(34, 211, 238, 0.8),
+        0 22px 60px rgba(15, 23, 42, 1);
+    }
+
+    .auth-logo-wrap img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 999px;
+    }
+
+    .auth-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .auth-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .auth-subsubtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 10px;
+    }
+
+    .auth-card {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 14px 14px 12px 14px;
+      box-shadow:
+        0 18px 40px rgba(15, 23, 42, 1),
+        0 0 20px rgba(34, 211, 238, 0.15);
+      margin-bottom: 14px;
+    }
+
+    .tabs-auth {
+      display: flex;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+
+    .tab-auth-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 7px 0;
+      font-size: 12px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .tab-auth-btn.active {
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+      color: #020617;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 8px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .input {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 9px 13px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .select {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 8px 13px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+      color: #020617;
+      font-size: 14px;
+      padding: 9px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 16px 38px rgba(8, 47, 73, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .auth-footer {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .auth-footer strong {
+      color: #e0f2fe;
+    }
+
+    .auth-error {
+      font-size: 11px;
+      color: #fecaca;
+      margin-top: 4px;
+      min-height: 14px;
+    }
+
+    /* ========= APP SHELL ========= */
+
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #020617 0, #020617 45%, #020617 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header {
+      padding: 14px 18px 10px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, var(--turquoise), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-role {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .pill-role span.role-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+    }
+
+    .pill-role small {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+
+    .logout-btn {
+      font-size: 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text-muted);
+      padding: 5px 9px;
+      cursor: pointer;
+    }
+
+    /* Bandeau live */
+    .live-banner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: radial-gradient(circle at left, rgba(34, 211, 238, 0.18), transparent 60%);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+      flex-shrink: 0;
+    }
+
+    .live-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .live-track {
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .live-track-inner {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 16s linear infinite;
+      font-size: 11px;
+      color: #e0f2fe;
+    }
+
+    .live-highlight {
+      color: var(--turquoise);
+      font-weight: 600;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* MAIN */
+    .app-main {
+      flex: 1;
+      padding: 12px 14px 68px 14px;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.18s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .screen-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin: 14px 0 6px 0;
+    }
+
+    /* CARTES, LIKE, COMMENTAIRES, RECHERCHE, MISSIONS, PROFIL, NAV
+       identiques à la version précédente pour ne pas alourdir les explications,
+       le code garde tout le comportement interactif */
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(34, 211, 238, 0.08), #020617);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(30, 64, 175, 0.6);
+      padding: 13px 13px 11px 13px;
+      margin-bottom: 12px;
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.95),
+        0 0 16px rgba(34, 211, 238, 0.14);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 8px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, var(--turquoise), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #020617;
+    }
+
+    .avatar.association {
+      box-shadow: 0 0 18px rgba(52, 211, 153, 0.8);
+    }
+
+    .avatar.membre {
+      box-shadow: 0 0 18px rgba(59, 130, 246, 0.8);
+    }
+
+    .card-meta {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+
+    .badge.association {
+      border-color: rgba(45, 212, 191, 0.9);
+      color: #a5f3fc;
+    }
+
+    .badge.membre {
+      border-color: rgba(59, 130, 246, 0.9);
+      color: #bfdbfe;
+    }
+
+    .card-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .card-body {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+    }
+
+    .chip-primary {
+      border-color: rgba(34, 211, 238, 0.9);
+      color: var(--turquoise);
+    }
+
+    .chip-soft {
+      border-style: dashed;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .card-footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 2px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--text-muted);
+    }
+
+    .btn-small {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+      color: #020617;
+      font-size: 11px;
+      padding: 6px 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(8, 47, 73, 0.8);
+    }
+
+    .btn-small span.icon {
+      font-size: 13px;
+    }
+
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      padding: 4px 8px;
+      background: rgba(15, 23, 42, 0.7);
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .like-btn.liked {
+      border-color: rgba(248, 113, 113, 1);
+      background: radial-gradient(circle at top, rgba(248, 113, 113, 0.3), rgba(15, 23, 42, 0.95));
+      color: #fecaca;
+    }
+
+    .like-heart {
+      transition: transform 0.15s ease-out;
+    }
+
+    .like-btn.liked .like-heart {
+      transform: scale(1.2);
+    }
+
+    .comments-toggle {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .comments-toggle span.chevron {
+      font-size: 12px;
+      transition: transform 0.15s ease-out;
+    }
+
+    .comments-toggle.open span.chevron {
+      transform: rotate(90deg);
+    }
+
+    .comments {
+      margin-top: 8px;
+      border-top: 1px solid rgba(30, 64, 175, 0.7);
+      padding-top: 6px;
+      display: none;
+    }
+
+    .comments.open {
+      display: block;
+    }
+
+    .comment {
+      font-size: 11px;
+      color: #cbd5f5;
+      margin-bottom: 4px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: #e0f2fe;
+    }
+
+    .comment-input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .comment-input-row input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 5px 9px;
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 11px;
+      outline: none;
+    }
+
+    .comment-input-row input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .comment-send-btn {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+      color: #020617;
+      font-size: 11px;
+      padding: 5px 9px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* recherche, missions, profil, nav */
+
+    .search-box {
+      margin-bottom: 14px;
+    }
+
+    .quick-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .filter-pill {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+      white-space: nowrap;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .filter-pill.active {
+      border-color: rgba(34, 211, 238, 1);
+      color: var(--turquoise);
+      background: radial-gradient(circle at top, rgba(34, 211, 238, 0.3), rgba(15, 23, 42, 0.95));
+    }
+
+    .empty-state {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .card-form {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(37, 99, 235, 0.75);
+      padding: 12px 12px 11px 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .toggle-group {
+      display: flex;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 3px;
+    }
+
+    .toggle-option {
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .toggle-option.active {
+      background: linear-gradient(135deg, var(--cyan), var(--turquoise));
+      color: #020617;
+      font-weight: 600;
+    }
+
+    .textarea {
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
+      border-radius: 16px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 9px 10px;
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 7px;
+    }
+
+    .textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .mission-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(22, 101, 52, 0.9);
+      padding: 10px 11px 9px 11px;
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.15), rgba(15, 23, 42, 0.98));
+      margin-bottom: 10px;
+      box-shadow: 0 14px 32px rgba(5, 46, 22, 0.7);
+    }
+
+    .mission-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .mission-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .mission-badge {
+      font-size: 10px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.2);
+      border: 1px solid rgba(74, 222, 128, 0.9);
+      color: #bbf7d0;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .mission-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .mission-progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .mission-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--cyan), var(--turquoise));
+      width: 62%;
+    }
+
+    .mission-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 25% 20%, var(--turquoise), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #020617;
+      box-shadow:
+        0 0 22px rgba(34, 211, 238, 0.9),
+        0 18px 40px rgba(15, 23, 42, 1);
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .profile-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 12px;
+      margin: 10px 0 12px 0;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-stat strong {
+      color: #e5f1ff;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .btn-outline {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: transparent;
+      color: var(--text-main);
+      font-size: 12px;
+      padding: 7px 0;
+      cursor: pointer;
+    }
+
+    .profile-section-title {
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      padding: 0 14px;
+      z-index: 30;
+    }
+
+    .nav-inner {
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(18px);
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 1);
+      box-shadow:
+        0 20px 55px rgba(15, 23, 42, 1),
+        0 0 18px rgba(34, 211, 238, 0.25);
+      padding: 7px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      padding: 4px 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      transition: all 0.14s ease-out;
+    }
+
+    .nav-item-icon {
+      font-size: 18px;
+      margin-bottom: 1px;
+    }
+
+    .nav-item.active {
+      background: radial-gradient(circle at top, rgba(34, 211, 238, 0.3), transparent 70%);
+      color: var(--turquoise);
+    }
+
+    .nav-item.active .nav-item-icon {
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .nav-item-center {
+      flex: 0;
+    }
+
+    .nav-fab {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, var(--turquoise), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 26px rgba(34, 211, 238, 0.9),
+        0 22px 50px rgba(15, 23, 42, 1);
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: #020617;
+      transform: translateY(-7px);
+    }
+
+    .app-main::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .app-main::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .app-main::-webkit-scrollbar-thumb {
+      background: rgba(30, 64, 175, 0.8);
+      border-radius: 999px;
+    }
+
+    @media (min-width: 768px) {
+      .app-main {
+        padding-bottom: 80px;
+      }
+    }
+
+    .x-card {
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), #020617);
+      border: 1px solid rgba(56, 189, 248, 0.7);
+    }
+
+    .x-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .x-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .x-body {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .x-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .x-refresh-btn {
+      border-radius: 999px;
+      border: none;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--turquoise);
+      font-size: 10px;
+      padding: 4px 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+    }
+
+    .x-link {
+      font-size: 10px;
+      color: #e0f2fe;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="root">
+
+    <!-- ========= ÉCRAN AUTH ========= -->
+    <div id="authShell" class="auth-shell">
+      <div>
+        <div class="auth-header">
+          <div class="auth-logo-wrap">
+            <!-- mets ici ton fichier de logo -->
+            <img src="humanity-logo.png" alt="Logo Humanity" />
+          </div>
+          <div class="auth-title">Humanity</div>
+          <div class="auth-subtitle">
+            Le réseau social qui connecte associations et membres engagés.
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-subsubtitle">Accès</div>
+          <div class="tabs-auth">
+            <button class="tab-auth-btn active" id="tabSignup">Créer un compte</button>
+            <button class="tab-auth-btn" id="tabLogin">Se connecter</button>
+          </div>
+
+          <!-- formulaire inscription -->
+          <div id="signupForm">
+            <div class="form-group">
+              <label class="form-label">Tu es</label>
+              <select id="signupRole" class="select">
+                <option value="membre">Membre Humanity</option>
+                <option value="association">Association</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nom visible dans l’application</label>
+              <input id="signupName" class="input" placeholder="Ex : Léo, Solidarité Rue..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input id="signupEmail" type="email" class="input" placeholder="toi@humanity.app" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mot de passe</label>
+              <input id="signupPassword" type="password" class="input" placeholder="Au moins 6 caractères" />
+            </div>
+            <button class="btn-primary" id="signupBtn">
+              <span>Créer mon compte</span>
+            </button>
+            <div class="auth-error" id="signupError"></div>
+          </div>
+
+          <!-- formulaire connexion -->
+          <div id="loginForm" class="hidden">
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input id="loginEmail" type="email" class="input" placeholder="toi@humanity.app" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mot de passe</label>
+              <input id="loginPassword" type="password" class="input" placeholder="Ton mot de passe" />
+            </div>
+            <button class="btn-primary" id="loginBtn">
+              <span>Se connecter</span>
+            </button>
+            <div class="auth-error" id="loginError"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        Humanity est une maquette interactive pour montrer le concept de ton
+        réseau social. Aucune donnée n’est envoyée sur un serveur, tout reste
+        dans le stockage local du navigateur.
+      </div>
+    </div>
+
+    <!-- ========= APP SHELL ========= -->
+    <div id="appShell" class="app-shell hidden">
+      <header class="app-header">
+        <div class="header-row">
+          <div class="brand">
+            <div class="brand-logo">
+              <img src="humanity-logo.png" alt="Logo Humanity" />
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">Humanity</div>
+              <div class="brand-subtitle">Réseau social solidaire</div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="pill-role" id="roleToggle" type="button">
+              <span class="role-dot"></span>
+              <small id="roleLabel">Membre Humanity</small>
+            </button>
+            <button class="logout-btn" id="logoutBtn" type="button">
+              Quitter
+            </button>
+          </div>
+        </div>
+
+        <div class="live-banner">
+          <div class="live-dot"></div>
+          <div class="live-label">En direct</div>
+          <div class="live-track">
+            <div class="live-track-inner" id="liveMessages"></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <!-- ACCUEIL -->
+        <section class="screen active" id="screen-home">
+          <h1 class="screen-title">Fil Humanity</h1>
+          <p class="screen-subtitle">
+            Découvre les dernières actions des associations et des membres autour de toi.
+          </p>
+
+          <div class="section-label">Vu sur X</div>
+          <article class="card x-card">
+            <div class="x-header">
+              <span class="x-label">Tendance engagement</span>
+              <span>🕊️ #HumanityLive</span>
+            </div>
+            <div class="x-body" id="xFeedText">
+              Chargement du flux X...
+            </div>
+            <div class="x-meta">
+              <button class="x-refresh-btn" id="xRefreshBtn">
+                ⟳ Actualiser le flux
+              </button>
+              <span class="x-link" id="xLink">
+                Ouvrir X
+              </span>
+            </div>
+          </article>
+
+          <div class="section-label">Pour toi</div>
+
+          <!-- posts comme avant -->
+          <article class="card" data-card-id="1">
+            <div class="card-header">
+              <div class="avatar association">SR</div>
+              <div class="card-meta">
+                <div class="card-name-row">
+                  <span class="card-name">Solidarité Rue</span>
+                  <span class="badge association">Association</span>
+                </div>
+                <span class="card-time">Il y a 12 min • Paris</span>
+              </div>
+            </div>
+            <div class="card-body">
+              Nous recherchons <strong>10 bénévoles</strong> pour notre maraude
+              de ce soir, distribution de repas et échanges avec les personnes
+              à la rue.
+            </div>
+            <div class="card-tags">
+              <span class="chip chip-primary">Bénévolat urgent</span>
+              <span class="chip">Vendredi • 19 h à 23 h</span>
+              <span class="chip">Métro Belleville</span>
+            </div>
+            <div class="card-footer">
+              <div class="card-footer-left">
+                <span class="participants" data-base="8">8 intéressés</span>
+                <span class="dot"></span>
+                <span>3 places restantes</span>
+              </div>
+              <button class="btn-small participate-btn" type="button">
+                <span class="icon">🤝</span>
+                Je participe
+              </button>
+            </div>
+            <div class="card-footer" style="margin-top: 6px;">
+              <button class="comments-toggle" type="button">
+                💬 <span class="comments-count">2</span> commentaires
+                <span class="chevron">›</span>
+              </button>
+              <button class="like-btn" data-likes="17" type="button">
+                <span class="like-heart">♡</span>
+                <span class="like-count">17</span>
+              </button>
+            </div>
+            <div class="comments">
+              <div class="comment">
+                <span class="comment-author">Nadia</span>
+                <span>Je peux venir à partir de 20 h, je peux vous rejoindre</span>
+              </div>
+              <div class="comment">
+                <span class="comment-author">Tom</span>
+                <span>Je viens avec deux amis, trop hâte</span>
+              </div>
+              <div class="comment-input-row">
+                <input type="text" placeholder="Ajouter un commentaire..." />
+                <button class="comment-send-btn" type="button">Envoyer</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" data-card-id="2">
+            <div class="card-header">
+              <div class="avatar membre">LH</div>
+              <div class="card-meta">
+                <div class="card-name-row">
+                  <span class="card-name" id="homeCurrentUserName">Léo – Membre Humanity</span>
+                  <span class="badge membre" id="homeCurrentUserBadge">Membre</span>
+                </div>
+                <span class="card-time">Il y a 1 h • Lille</span>
+              </div>
+            </div>
+            <div class="card-body">
+              Première mission avec Humanity ce matin dans une maison de retraite,
+              j’ai passé un moment incroyable avec les résidents. Merci à
+              l’association pour l’accueil, j’ai envie de continuer.
+            </div>
+            <div class="card-tags">
+              <span class="chip">Seniors</span>
+              <span class="chip">Animation</span>
+              <span class="chip chip-soft">Partage d’expérience</span>
+            </div>
+            <div class="card-footer">
+              <button class="comments-toggle" type="button">
+                💬 <span class="comments-count">4</span> commentaires
+                <span class="chevron">›</span>
+              </button>
+              <button class="like-btn" data-likes="23" type="button">
+                <span class="like-heart">♡</span>
+                <span class="like-count">23</span>
+              </button>
+            </div>
+            <div class="comments">
+              <div class="comment">
+                <span class="comment-author">Claire</span>
+                <span>Merci pour ta présence, les résidents ont adoré</span>
+              </div>
+              <div class="comment-input-row">
+                <input type="text" placeholder="Réagir..." />
+                <button class="comment-send-btn" type="button">Envoyer</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- RECHERCHE -->
+        <section class="screen" id="screen-search">
+          <h1 class="screen-title">Recherche</h1>
+          <p class="screen-subtitle">
+            Trouve une association, une mission ou un membre autour de toi.
+          </p>
+
+          <div class="search-box">
+            <input
+              type="text"
+              class="input"
+              id="searchInput"
+              placeholder="Rechercher une mission, une ville, une cause..."
+            />
+          </div>
+
+          <div class="quick-filters" id="filters">
+            <button class="filter-pill active" data-filter="all">Proche de moi</button>
+            <button class="filter-pill" data-filter="weekend">Ce week end</button>
+            <button class="filter-pill" data-filter="online">En ligne</button>
+            <button class="filter-pill" data-filter="urgent">Urgent</button>
+            <button class="filter-pill" data-filter="environment">Environnement</button>
+          </div>
+
+          <div class="section-label">Suggestions</div>
+
+          <article class="card search-result"
+            data-tags="education jeunesse lille proche"
+            data-filter-tags="all weekend">
+            <div class="card-header">
+              <div class="avatar association">EF</div>
+              <div class="card-meta">
+                <div class="card-name-row">
+                  <span class="card-name">École pour Tous</span>
+                  <span class="badge association">Association</span>
+                </div>
+                <span class="card-time">À 2,3 km • Lille</span>
+              </div>
+            </div>
+            <div class="card-body">
+              Aide aux devoirs pour des collégiens une fois par semaine,
+              accompagnement scolaire et confiance en soi.
+            </div>
+            <div class="card-tags">
+              <span class="chip chip-primary">Éducation</span>
+              <span class="chip">Mercredi • 17 h 30</span>
+              <span class="chip">Engagement régulier</span>
+            </div>
+          </article>
+
+          <article class="card search-result"
+            data-tags="environnement parc nettoyage lille weekend"
+            data-filter-tags="all weekend environment urgent">
+            <div class="card-header">
+              <div class="avatar association">VP</div>
+              <div class="card-meta">
+                <div class="card-name-row">
+                  <span class="card-name">Ville Propre</span>
+                  <span class="badge association">Association</span>
+                </div>
+                <span class="card-time">À 1,1 km • Parc Jean Lebas</span>
+              </div>
+            </div>
+            <div class="card-body">
+              Opération de nettoyage du parc avec tri des déchets et
+              sensibilisation. Le matériel est fourni.
+            </div>
+            <div class="card-tags">
+              <span class="chip chip-primary">Environnement</span>
+              <span class="chip">Samedi • 14 h à 17 h</span>
+              <span class="chip">Ouvert aux débutants</span>
+            </div>
+          </article>
+
+          <article class="card search-result"
+            data-tags="en ligne mentorat orientation france"
+            data-filter-tags="all online">
+            <div class="card-header">
+              <div class="avatar association">JF</div>
+              <div class="card-meta">
+                <div class="card-name-row">
+                  <span class="card-name">Jeunes Futurs</span>
+                  <span class="badge association">Association</span>
+                </div>
+                <span class="card-time">En ligne • France</span>
+              </div>
+            </div>
+            <div class="card-body">
+              Mentorat vidéo une fois par semaine pour des lycéens qui
+              préparent leurs études supérieures.
+            </div>
+            <div class="card-tags">
+              <span class="chip chip-primary">Accompagnement</span>
+              <span class="chip">En ligne</span>
+            </div>
+          </article>
+
+          <p class="empty-state" id="searchEmpty" style="display:none;">
+            Aucun résultat ne correspond pour l’instant. Essaie avec un autre mot
+            ou un filtre différent.
+          </p>
+        </section>
+
+        <!-- AJOUT POST -->
+        <section class="screen" id="screen-add">
+          <h1 class="screen-title">Créer un post</h1>
+          <p class="screen-subtitle">
+            Partage une mission de bénévolat ou un moment de ton engagement.
+          </p>
+
+          <div class="card-form">
+            <div class="form-row">
+              <div class="avatar membre" id="avatarInitials">LH</div>
+              <div class="toggle-group" id="postTypeToggle">
+                <button class="toggle-option active" data-type="mission" type="button">
+                  Mission
+                </button>
+                <button class="toggle-option" data-type="story" type="button">
+                  Photo ou texte
+                </button>
+              </div>
+            </div>
+
+            <textarea
+              class="textarea"
+              id="postContent"
+              placeholder="Décris ta mission, les besoins, le lieu, les horaires..."
+            ></textarea>
+
+            <div class="form-footer">
+              <div class="form-actions">
+                <button class="icon-btn" title="Ajouter une photo" type="button">
+                  📷
+                </button>
+                <button class="icon-btn" title="Ajouter une localisation" type="button">
+                  📍
+                </button>
+              </div>
+              <button class="btn-small" id="publishBtn" type="button">
+                <span>Publier (simulation)</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="screen-subtitle" id="publishInfo" style="display:none;">
+            Ton post a été simulé comme publié dans le fil. Cette maquette
+            garde tout en local sur ton navigateur.
+          </p>
+        </section>
+
+        <!-- MISSIONS -->
+        <section class="screen" id="screen-missions">
+          <h1 class="screen-title">Mes missions</h1>
+          <p class="screen-subtitle">
+            Retrouve les missions que tu suis ou auxquelles tu participes.
+          </p>
+
+          <div class="section-label">En cours</div>
+
+          <article class="mission-card">
+            <div class="mission-top">
+              <div>
+                <div class="mission-title">Maraude du vendredi soir</div>
+                <div class="mission-meta">
+                  Solidarité Rue • Tous les vendredis • 19 h à 23 h
+                </div>
+              </div>
+              <span class="mission-badge">Confirmée</span>
+            </div>
+            <div class="mission-progress-bar">
+              <div class="mission-progress-fill"></div>
+            </div>
+            <div class="mission-footer">
+              <span>Prochaine date : 21 novembre</span>
+              <span>3 participations validées sur 4</span>
+            </div>
+          </article>
+
+          <div class="section-label">En attente</div>
+
+          <article class="mission-card">
+            <div class="mission-top">
+              <div>
+                <div class="mission-title">Atelier CV et orientation</div>
+                <div class="mission-meta">
+                  Jeunes Futurs • Samedi 10 h à 12 h 30 • Métro Gambetta
+                </div>
+              </div>
+              <span class="mission-badge" style="border-color:#facc15;color:#facc15;">
+                En attente
+              </span>
+            </div>
+            <div class="mission-footer">
+              <span>Inscription envoyée</span>
+              <span>Validation de l’association en cours</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- PROFIL -->
+        <section class="screen" id="screen-profile">
+          <h1 class="screen-title">Profil</h1>
+
+          <div class="profile-header">
+            <div class="profile-avatar" id="profileInitials">LH</div>
+            <div class="profile-info">
+              <div class="profile-name" id="profileName">Léo – Membre Humanity</div>
+              <div class="profile-role" id="profileRole">
+                Membre depuis 2025 • Ville inconnue
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <strong>12</strong><br />missions effectuées
+            </div>
+            <div class="profile-stat">
+              <strong>4</strong><br />associations suivies
+            </div>
+            <div class="profile-stat">
+              <strong>38 h</strong><br />de bénévolat
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn-outline" type="button">Modifier le profil</button>
+            <button class="btn-outline" id="prefBtn" type="button">Préférences missions</button>
+          </div>
+
+          <div>
+            <div class="profile-section-title">
+              Causes principales
+            </div>
+            <div class="card-tags" style="margin-bottom: 8px;">
+              <span class="chip chip-primary">Jeunesse</span>
+              <span class="chip">Seniors</span>
+              <span class="chip">Précarité</span>
+            </div>
+
+            <div class="profile-section-title">
+              À propos
+            </div>
+            <p class="screen-subtitle" style="margin-bottom: 8px;">
+              Humanity connecte les personnes qui veulent agir aux associations
+              qui ont besoin de coups de main. Ce profil est un exemple de ce
+              que tu pourrais montrer à tes potes.
+            </p>
+
+            <div class="profile-section-title">
+              Associations suivies
+            </div>
+            <div class="card-tags">
+              <span class="chip">Solidarité Rue</span>
+              <span class="chip">Jeunes Futurs</span>
+              <span class="chip">Ville Propre</span>
+              <span class="chip">Maison des Seniors Lille</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav">
+        <div class="nav-inner">
+          <button class="nav-item active" data-target="screen-home" type="button">
+            <span class="nav-item-icon">🏠</span>
+            <span>Accueil</span>
+          </button>
+          <button class="nav-item" data-target="screen-search" type="button">
+            <span class="nav-item-icon">🔍</span>
+            <span>Recherche</span>
+          </button>
+          <div class="nav-item-center">
+            <button class="nav-fab" data-target="screen-add" type="button">
+              +
+            </button>
+          </div>
+          <button class="nav-item" data-target="screen-missions" type="button">
+            <span class="nav-item-icon">🎯</span>
+            <span>Missions</span>
+          </button>
+          <button class="nav-item" data-target="screen-profile" type="button">
+            <span class="nav-item-icon">👤</span>
+            <span>Profil</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    // utilitaires de stockage local
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem("humanityUsers") || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("humanityUsers", JSON.stringify(users));
+    }
+
+    function setCurrentUser(user) {
+      localStorage.setItem("humanityCurrentUser", JSON.stringify(user));
+    }
+
+    function getCurrentUser() {
+      try {
+        const raw = localStorage.getItem("humanityCurrentUser");
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function clearCurrentUser() {
+      localStorage.removeItem("humanityCurrentUser");
+    }
+
+    // éléments d’auth
+    const authShell = document.getElementById("authShell");
+    const appShell = document.getElementById("appShell");
+    const tabSignup = document.getElementById("tabSignup");
+    const tabLogin = document.getElementById("tabLogin");
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+
+    const signupRole = document.getElementById("signupRole");
+    const signupName = document.getElementById("signupName");
+    const signupEmail = document.getElementById("signupEmail");
+    const signupPassword = document.getElementById("signupPassword");
+    const signupBtn = document.getElementById("signupBtn");
+    const signupError = document.getElementById("signupError");
+
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    const roleLabel = document.getElementById("roleLabel");
+
+    const homeCurrentUserName = document.getElementById("homeCurrentUserName");
+    const homeCurrentUserBadge = document.getElementById("homeCurrentUserBadge");
+    const profileName = document.getElementById("profileName");
+    const profileRole = document.getElementById("profileRole");
+    const profileInitials = document.getElementById("profileInitials");
+    const avatarInitials = document.getElementById("avatarInitials");
+
+    function initialsFromName(name) {
+      if (!name) return "H";
+      const parts = name.trim().split(" ");
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+      return (
+        parts[0].charAt(0).toUpperCase() + parts[1].charAt(0).toUpperCase()
+      );
+    }
+
+    function enterApp(user) {
+      authShell.classList.add("hidden");
+      appShell.classList.remove("hidden");
+
+      const roleText = user.role === "association" ? "Association" : "Membre Humanity";
+      roleLabel.textContent = roleText;
+
+      const displayName = user.name || "Profil Humanity";
+
+      if (homeCurrentUserName) {
+        homeCurrentUserName.textContent =
+          user.role === "association"
+            ? displayName + " – Association"
+            : displayName + " – Membre Humanity";
+      }
+      if (homeCurrentUserBadge) {
+        homeCurrentUserBadge.textContent =
+          user.role === "association" ? "Asso" : "Membre";
+        homeCurrentUserBadge.classList.toggle("association", user.role === "association");
+        homeCurrentUserBadge.classList.toggle("membre", user.role !== "association");
+      }
+
+      if (profileName) {
+        profileName.textContent = displayName;
+      }
+      if (profileRole) {
+        profileRole.textContent =
+          (user.role === "association" ? "Compte association" : "Compte membre") +
+          " • Créé sur cette maquette";
+      }
+
+      const initials = initialsFromName(displayName);
+      if (profileInitials) profileInitials.textContent = initials;
+      if (avatarInitials) avatarInitials.textContent = initials;
+    }
+
+    function goToAuth() {
+      clearCurrentUser();
+      appShell.classList.add("hidden");
+      authShell.classList.remove("hidden");
+    }
+
+    // bascule inscription / connexion
+    tabSignup.addEventListener("click", () => {
+      tabSignup.classList.add("active");
+      tabLogin.classList.remove("active");
+      signupForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+      signupError.textContent = "";
+      loginError.textContent = "";
+    });
+
+    tabLogin.addEventListener("click", () => {
+      tabLogin.classList.add("active");
+      tabSignup.classList.remove("active");
+      loginForm.classList.remove("hidden");
+      signupForm.classList.add("hidden");
+      signupError.textContent = "";
+      loginError.textContent = "";
+    });
+
+    // inscription
+    signupBtn.addEventListener("click", () => {
+      signupError.textContent = "";
+      const role = signupRole.value;
+      const name = signupName.value.trim();
+      const email = signupEmail.value.trim().toLowerCase();
+      const password = signupPassword.value;
+
+      if (!name || !email || !password) {
+        signupError.textContent = "Merci de remplir tous les champs.";
+        return;
+      }
+      if (password.length < 6) {
+        signupError.textContent = "Le mot de passe doit faire au moins 6 caractères.";
+        return;
+      }
+
+      const users = getUsers();
+      if (users.some((u) => u.email === email)) {
+        signupError.textContent = "Un compte existe déjà avec cet email.";
+        return;
+      }
+
+      const user = { id: Date.now(), role, name, email, password };
+      users.push(user);
+      saveUsers(users);
+      setCurrentUser(user);
+      enterApp(user);
+    });
+
+    // connexion
+    loginBtn.addEventListener("click", () => {
+      loginError.textContent = "";
+      const email = loginEmail.value.trim().toLowerCase();
+      const password = loginPassword.value;
+
+      if (!email || !password) {
+        loginError.textContent = "Merci de remplir tous les champs.";
+        return;
+      }
+
+      const users = getUsers();
+      const user = users.find((u) => u.email === email && u.password === password);
+      if (!user) {
+        loginError.textContent = "Email ou mot de passe incorrect.";
+        return;
+      }
+
+      setCurrentUser(user);
+      enterApp(user);
+    });
+
+    // déconnexion
+    logoutBtn.addEventListener("click", () => {
+      goToAuth();
+    });
+
+    // navigation dans l’app
+    const screens = document.querySelectorAll(".screen");
+    const navButtons = document.querySelectorAll("[data-target]");
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+
+        screens.forEach((s) => {
+          s.classList.toggle("active", s.id === targetId);
+        });
+
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((item) => item.classList.remove("active"));
+
+        const bottomBtn = document.querySelector(
+          `.nav-item[data-target="${targetId}"]`
+        );
+        if (bottomBtn) bottomBtn.classList.add("active");
+      });
+    });
+
+    // toggle type de post
+    const postTypeToggle = document.getElementById("postTypeToggle");
+    const postContentEl = document.getElementById("postContent");
+
+    if (postTypeToggle) {
+      postTypeToggle.addEventListener("click", (e) => {
+        const btn = e.target.closest(".toggle-option");
+        if (!btn) return;
+
+        const type = btn.getAttribute("data-type");
+        postTypeToggle
+          .querySelectorAll(".toggle-option")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        if (type === "mission") {
+          postContentEl.placeholder =
+            "Décris ta mission, les besoins, le lieu, les horaires...";
+        } else {
+          postContentEl.placeholder =
+            "Partage une photo, un texte, un ressenti sur ton engagement...";
+        }
+      });
+    }
+
+    // bouton publier
+    const publishBtn = document.getElementById("publishBtn");
+    const publishInfo = document.getElementById("publishInfo");
+
+    if (publishBtn) {
+      publishBtn.addEventListener("click", () => {
+        publishInfo.style.display = "block";
+      });
+    }
+
+    // likes
+    document.querySelectorAll(".like-btn").forEach((btn) => {
+      const countEl = btn.querySelector(".like-count");
+      const heartEl = btn.querySelector(".like-heart");
+      const baseLikes = Number(btn.dataset.likes) || 0;
+      let liked = false;
+
+      btn.addEventListener("click", () => {
+        liked = !liked;
+        btn.classList.toggle("liked", liked);
+        const newLikes = liked ? baseLikes + 1 : baseLikes;
+        countEl.textContent = newLikes;
+        heartEl.textContent = liked ? "♥" : "♡";
+      });
+    });
+
+    // participation
+    document.querySelectorAll(".participate-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".card");
+        const participantsEl = card.querySelector(".participants");
+        const base = Number(participantsEl.dataset.base) || 0;
+        let current = participantsEl.dataset.current
+          ? Number(participantsEl.dataset.current)
+          : base;
+        current += 1;
+        participantsEl.dataset.current = current;
+        participantsEl.textContent = current + " intéressés";
+        btn.textContent = "Inscription envoyée";
+        btn.disabled = true;
+      });
+    });
+
+    // commentaires
+    document.querySelectorAll(".card").forEach((card) => {
+      const commentsToggle = card.querySelector(".comments-toggle");
+      const commentsBlock = card.querySelector(".comments");
+      const commentsCountEl = card.querySelector(".comments-count");
+
+      if (commentsToggle && commentsBlock) {
+        commentsToggle.addEventListener("click", () => {
+          const open = commentsBlock.classList.toggle("open");
+          commentsToggle.classList.toggle("open", open);
+        });
+
+        const input = commentsBlock.querySelector("input");
+        const sendBtn = commentsBlock.querySelector(".comment-send-btn");
+
+        if (input && sendBtn) {
+          sendBtn.addEventListener("click", () => {
+            const text = input.value.trim();
+            if (!text) return;
+
+            const div = document.createElement("div");
+            div.className = "comment";
+            div.innerHTML =
+              '<span class="comment-author">Toi</span>' +
+              "<span>" +
+              text +
+              "</span>";
+            commentsBlock.insertBefore(div, commentsBlock.lastElementChild);
+
+            input.value = "";
+            if (commentsCountEl) {
+              commentsCountEl.textContent =
+                Number(commentsCountEl.textContent || "0") + 1;
+            }
+          });
+        }
+      }
+    });
+
+    // recherche
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.querySelectorAll(".search-result");
+    const searchEmpty = document.getElementById("searchEmpty");
+    const filters = document.getElementById("filters");
+    let activeFilter = "all";
+
+    function applySearchFilter() {
+      const query = (searchInput.value || "").toLowerCase();
+      let visibleCount = 0;
+
+      searchResults.forEach((card) => {
+        const tags = card.dataset.tags || "";
+        const filterTags = card.dataset.filterTags || "";
+        const matchText = tags.toLowerCase().includes(query);
+        const matchFilter =
+          activeFilter === "all" || filterTags.includes(activeFilter);
+
+        const visible = matchText && matchFilter;
+        card.style.display = visible ? "block" : "none";
+        if (visible) visibleCount += 1;
+      });
+
+      searchEmpty.style.display = visibleCount === 0 ? "block" : "none";
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", applySearchFilter);
+    }
+
+    if (filters) {
+      filters.addEventListener("click", (e) => {
+        const btn = e.target.closest(".filter-pill");
+        if (!btn) return;
+        activeFilter = btn.dataset.filter;
+
+        filters
+          .querySelectorAll(".filter-pill")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        applySearchFilter();
+      });
+    }
+
+    // préférences missions
+    const prefBtn = document.getElementById("prefBtn");
+    if (prefBtn) {
+      prefBtn.addEventListener("click", () => {
+        alert(
+          "Dans la vraie application tu pourrais choisir tes causes préférées et Humanity te proposerait des missions adaptées."
+        );
+      });
+    }
+
+    // bandeau direct
+    const liveMessagesEl = document.getElementById("liveMessages");
+    const liveItems = [
+      "🌍 " + "Des membres viennent de rejoindre une mission à Lille, Lyon et Marseille",
+      "🤝 " + "Humanity connecte déjà des dizaines d’associations et de membres engagés",
+      "🕯️ " + "Nuit solidaire ce soir dans plusieurs villes",
+      "🎓 " + "Des étudiants organisent une collecte de fournitures scolaires",
+      "🌱 " + "Une opération de nettoyage de parc vient de démarrer"
+    ];
+
+    function updateLiveMessages() {
+      const text = liveItems.join(" • ");
+      liveMessagesEl.innerHTML = text.replace(
+        "Humanity",
+        '<span class="live-highlight">Humanity</span>'
+      );
+    }
+
+    updateLiveMessages();
+    setInterval(updateLiveMessages, 25000);
+
+    // flux X simulé
+    const xTexts = [
+      "“Si le bénévolat était une monnaie, Humanity serait la banque centrale de la solidarité.”",
+      "“On a rempli un gymnase de dons en une matinée grâce aux membres Humanity.”",
+      "“Défi solidaire, 500 heures de bénévolat en une semaine, lancé depuis l’appli.”",
+      "“Les jeunes montrent que la solidarité peut devenir un réflexe quotidien.”",
+      "“Derrière chaque mission Humanity il y a une histoire qui mérite d’être racontée.”"
+    ];
+
+    const xFeedText = document.getElementById("xFeedText");
+    const xRefreshBtn = document.getElementById("xRefreshBtn");
+    const xLink = document.getElementById("xLink");
+
+    function randomXText() {
+      const index = Math.floor(Math.random() * xTexts.length);
+      xFeedText.textContent = xTexts[index];
+    }
+
+    randomXText();
+    setInterval(randomXText, 20000);
+
+    xRefreshBtn.addEventListener("click", randomXText);
+
+    xLink.addEventListener("click", () => {
+      window.open("https://x.com/search?q=%23Humanity", "_blank");
+    });
+
+    // si un utilisateur est déjà en mémoire, on le reconnecte
+    const storedUser = getCurrentUser();
+    if (storedUser) {
+      enterApp(storedUser);
+    }
+  </script>
+</body>
+</html>
